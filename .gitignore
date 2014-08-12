@@ -41,6 +41,9 @@ coverage.xml
 .mr.developer.cfg
 .project
 .pydevproject
+# 
+.DS_Store
+*.sublime-workspace
 
 # Rope
 .ropeproject

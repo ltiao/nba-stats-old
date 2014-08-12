@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/tiao/Dropbox/Projects/nba-stats"
+		},
+		{
+            "path": "/Users/tiao/.virtualenvs/nba/bin",
+            "file_include_patterns": ["*activate"],
+            "file_exclude_patterns": ["*.*"]
+        }
+	]
+}
