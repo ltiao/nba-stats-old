@@ -14,6 +14,7 @@ To get setup for development,
 -   Modify `nba-stats.sublime-project` to set this up as a Sublime Text project
 -   Now you can easily access the `postactivate`/`predeactivate` triggers for your `virtualenv`
 -   Modify the `postactivate` script:
+    
     ```bash
     export PROJECT_ROOT=<project_root>
 
@@ -28,6 +29,7 @@ To get setup for development,
     subl --project nba-stats.sublime-project
     ```
 -   Modify the `predeactivate` script:
+    
     ```bash
     unset DJANGO_SETTINGS_MODULE
     unset DATABASE_URL
