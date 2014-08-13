@@ -20,7 +20,7 @@ class Person(models.Model):
     last_name = models.CharField(max_length=30)
     birthdate = models.DateField()
     school = models.CharField(max_length=30, null=True)
-    country = models.CharField(max_length=2, null=True) # might use django-country for this field
+    country = models.CharField(max_length=30, null=True) # might use django-country for this field
 
     @property
     def full_name(self):
@@ -48,23 +48,26 @@ class Player(Person):
         # If a team is dissolved, the player clearly 
         # still exists
     )
-    active = models.BooleanField()
+    active = models.NullBooleanField()
     # May need to revisit this since '00' (not '0') might be allowed
-    jersey = models.PositiveSmallIntegerField(
+    jersey = models.CharField(
         verbose_name = 'Jersey number',
         max_length = 2,
+        null = True,
     )
     # I've created Position as a separate model
     # since this could be a ManyToMany relation
     # (I've seen many players listed as 'SG-SF', 'PF-C', etc.)
-    position = models.ForeignKey('Position')
+    position = models.ForeignKey('Position', null=True)
     height = models.PositiveSmallIntegerField(
         verbose_name = 'Height (in)', 
-        max_length = 2
+        max_length = 2,
+        null = True,
     )
     weight = models.PositiveSmallIntegerField(
         verbose_name = 'Weight (lb)', 
-        max_length = 3
+        max_length = 3,
+        null = True,
     )
     pick = models.PositiveSmallIntegerField(
         verbose_name = 'Draft Pick', 
