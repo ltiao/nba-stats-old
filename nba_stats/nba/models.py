@@ -20,7 +20,7 @@ class Person(models.Model):
     last_name = models.CharField(max_length=30)
     birthdate = models.DateField()
     school = models.CharField(max_length=30, null=True)
-    country = models.CharField(max_length=2, null=True) # might use django-country for this field
+    country = models.CharField(max_length=30, null=True) # might use django-country for this field
 
     @property
     def full_name(self):
@@ -40,24 +40,26 @@ class Person(models.Model):
         ordering = ['first_name', 'last_name']
 
 class Player(Person):
-    team = models.ForeignKey('Team', related_name='players')
-    active = models.BooleanField()
+    is_active = models.BooleanField()
     # May need to revisit this since '00' (not '0') might be allowed
     jersey = models.PositiveSmallIntegerField(
         verbose_name = 'Jersey number',
         max_length = 2,
+        null = True,
     )
     # I've created Position as a separate model
     # since this could be a ManyToMany relation
     # (I've seen many players listed as 'SG-SF', 'PF-C', etc.)
-    position = models.ForeignKey('Position')
+    position = models.ForeignKey('Position', null=True)
     height = models.PositiveSmallIntegerField(
         verbose_name = 'Height (in)', 
-        max_length = 2
+        max_length = 2,
+        null = True,
     )
     weight = models.PositiveSmallIntegerField(
         verbose_name = 'Weight (lb)', 
-        max_length = 3
+        max_length = 3,
+        null = True,
     )
     pick = models.PositiveSmallIntegerField(
         verbose_name = 'Draft Pick', 
@@ -69,6 +71,10 @@ class Player(Person):
     def round(self):
         # return 1 if self.pick < 31 else 2
         return int(self.pick/31) + 1   
+
+    @property
+    def current_team(self):
+        pass
 
     # TODO: Integrate some python unit conversion
     # library to support simple conversions
@@ -99,7 +105,12 @@ class Team(models.Model):
     nickname = models.CharField(max_length=30, unique=True)
     
     arena = models.CharField(max_length=32)
-    year_founded = models.PositiveSmallIntegerField(max_length=4)
+    founded = models.PositiveSmallIntegerField(
+        verbose_name = 'Year Founded', 
+        max_length = 4
+    )
+
+    players = models.ManyToManyField('Player', through='Contract')
 
     # Could also have NonPlayers with roles such as GM, Owner, 
     # Head Coach, etc. and ForeignKey Team affiliations
@@ -116,6 +127,13 @@ class Team(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Contract(models.Model):
+    team = models.ForeignKey('Team', related_name = 'contracts')
+    player = models.ForeignKey('Player', related_name = 'contracts')
+    season_start = models.DateField()
+    season_end = models.DateField(null=True)
+    is_in_force = models.BooleanField()
 
 class StatLine(models.Model):
     """
@@ -184,7 +202,7 @@ class StatLine(models.Model):
         default=0
     )
     blk = models.IntegerField(
-        verbose_name = 'Blocks'
+        verbose_name = 'Blocks',
         help_text = 'The number of shot attempts that are blocked by a \
             player or team',
         max_length=2, 
@@ -235,7 +253,7 @@ class StatLine(models.Model):
             ast=self.ast, reb=self.reb)
 
 class Game(models.Model):
-    date = models.DateField()
+    date = models.DateField(verbose_name='Game Date (EST)')
     players = models.ManyToManyField('Player', through='StatLine')
     home = models.ForeignKey('Team', verbose_name='Home Team', related_name='home_games')
     away = models.ForeignKey('Team', verbose_name='Away Team', related_name='away_games')
