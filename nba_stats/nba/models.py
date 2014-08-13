@@ -131,26 +131,79 @@ class StatLine(models.Model):
         default = 0
     )
     fgm = models.IntegerField(
-        verbose_name = 'Field Goal Made',
+        verbose_name = 'Field Goals Made',
         help_text = 'The number of field goals made, including both \
             two-point and three-point field goals, by a player or team',
         max_length = 2,
         default = 0
     )
-    # TODO: Add `verbose_name`s and `help_text` to the rest of these
-    # according to `http://stats.nba.com/glossary.html` as has been
-    # done for the first 2
-    fga = models.IntegerField(max_length=2, default=0)
-    _3pm = models.IntegerField(max_length=2, default=0)
-    _3pa = models.IntegerField(max_length=2, default=0)
-    oreb = models.IntegerField(max_length=2, default=0)
-    dreb = models.IntegerField(max_length=2, default=0)
-    ast = models.IntegerField(max_length=2, default=0)
-    stl = models.IntegerField(max_length=2, default=0)
-    blk = models.IntegerField(max_length=2, default=0)
-    tov = models.IntegerField(max_length=2, default=0)
-    pf = models.IntegerField(max_length=1, default=0)
-
+    fga = models.IntegerField(
+        verbose_name = 'Field Goal Attempted',
+        help_text = 'The number of field goals attempted, including both \
+            two-point and three-point field goals, by a player or team',
+        max_length=2, 
+        default=0
+    )
+    _3pm = models.IntegerField(
+        verbose_name = 'Three Pointers Made',
+        help_text = 'The number of three-point field goals made',
+        max_length=2, 
+        default=0
+    )
+    _3pa = models.IntegerField(
+        verbose_name = 'Three Pointers Attempted',
+        help_text = 'The number of three-point field goals attempted',
+        max_length=2, 
+        default=0
+    )
+    oreb = models.IntegerField(
+        verbose_name = 'Offensive Rebounds',
+        help_text = 'The number of rebounds collected by the team that \
+            attempted the shot',
+        max_length=2, 
+        default=0
+    )
+    dreb = models.IntegerField(
+        verbose_name = 'Defensive Rebounds',
+        help_text = 'The number of rebounds collected by the team that \
+            did not attempt the shot',
+        max_length=2, 
+        default=0
+    )
+    ast = models.IntegerField(
+        verbose_name = 'Assists',
+        help_text = 'The number of assists -- passes that lead directly \
+            to a made basket -- by a player or team',
+        max_length=2, 
+        default=0
+    )
+    stl = models.IntegerField(
+        verbose_name = 'Steals',
+        help_text = 'The number of steals by a player or team',
+        max_length=2, 
+        default=0
+    )
+    blk = models.IntegerField(
+        verbose_name = 'Blocks'
+        help_text = 'The number of shot attempts that are blocked by a \
+            player or team',
+        max_length=2, 
+        default=0
+    )
+    tov = models.IntegerField(
+        verbose_name = 'Turnovers',
+        help_text = 'The number of turnovers -- possessions that are \
+            lost to the opposing team -- by a player or team',
+        max_length=2, 
+        default=0
+    )
+    pf = models.IntegerField(
+        verbose_name = 'Personal Foul',
+        help_text = 'The number of personal fouls committed by a player \
+            or team',
+        max_length=1, 
+        default=0
+    )
     # TODO: @saul not totally sure about this man
     # might be a good idea to have attributes like
     # `pts` as fields despite redundancy since it 
