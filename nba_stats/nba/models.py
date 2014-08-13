@@ -40,7 +40,14 @@ class Person(models.Model):
         ordering = ['first_name', 'last_name']
 
 class Player(Person):
-    team = models.ForeignKey('Team', related_name='players')
+    team = models.ForeignKey(
+        'Team', 
+        related_name = 'players',
+        null = True, # Free agents?
+        on_delete = models.SET_NULL 
+        # If a team is dissolved, the player clearly 
+        # still exists
+    )
     active = models.BooleanField()
     # May need to revisit this since '00' (not '0') might be allowed
     jersey = models.PositiveSmallIntegerField(
