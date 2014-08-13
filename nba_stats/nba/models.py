@@ -72,6 +72,10 @@ class Player(Person):
         # return 1 if self.pick < 31 else 2
         return int(self.pick/31) + 1   
 
+    @property
+    def current_team(self):
+        pass
+
     # TODO: Integrate some python unit conversion
     # library to support simple conversions
     # to/from metric system, etc.
