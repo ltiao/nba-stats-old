@@ -40,17 +40,9 @@ class Person(models.Model):
         ordering = ['first_name', 'last_name']
 
 class Player(Person):
-    team = models.ForeignKey(
-        'Team', 
-        related_name = 'players',
-        null = True, # Free agents?
-        on_delete = models.SET_NULL 
-        # If a team is dissolved, the player clearly 
-        # still exists
-    )
-    active = models.NullBooleanField()
+    is_active = models.BooleanField()
     # May need to revisit this since '00' (not '0') might be allowed
-    jersey = models.CharField(
+    jersey = models.PositiveSmallIntegerField(
         verbose_name = 'Jersey number',
         max_length = 2,
         null = True,
@@ -109,7 +101,12 @@ class Team(models.Model):
     nickname = models.CharField(max_length=30, unique=True)
     
     arena = models.CharField(max_length=32)
-    year_founded = models.PositiveSmallIntegerField(max_length=4)
+    founded = models.PositiveSmallIntegerField(
+        verbose_name = 'Year Founded', 
+        max_length = 4
+    )
+
+    players = models.ManyToManyField('Player', through='Contract')
 
     # Could also have NonPlayers with roles such as GM, Owner, 
     # Head Coach, etc. and ForeignKey Team affiliations
@@ -126,6 +123,13 @@ class Team(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Contract(models.Model):
+    team = models.ForeignKey('Team', related_name = 'contracts')
+    player = models.ForeignKey('Player', related_name = 'contracts')
+    season_start = models.DateField()
+    season_end = models.DateField(null=True)
+    is_in_force = models.BooleanField()
 
 class StatLine(models.Model):
     """
@@ -194,7 +198,7 @@ class StatLine(models.Model):
         default=0
     )
     blk = models.IntegerField(
-        verbose_name = 'Blocks'
+        verbose_name = 'Blocks',
         help_text = 'The number of shot attempts that are blocked by a \
             player or team',
         max_length=2, 
