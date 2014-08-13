@@ -5,9 +5,21 @@
 			"path": "/Users/tiao/Dropbox/Projects/nba-stats"
 		},
 		{
-            "path": "/Users/tiao/.virtualenvs/nba/bin",
-            "file_include_patterns": ["*activate"],
-            "file_exclude_patterns": ["*.*"]
-        }
+			"file_exclude_patterns":
+			[
+				"*.*"
+			],
+			"file_include_patterns":
+			[
+				"*activate"
+			],
+			"path": "/Users/tiao/.virtualenvs/nba/bin"
+		},
+		{
+			"path": "nba_stats"
+		},
+		{
+			"path": "nba_stats_bot"
+		}
 	]
 }
