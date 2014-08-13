@@ -1,0 +1,19 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/saulsparber/Documents/nbastats/nba-stats"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"*.*"
+			],
+			"file_include_patterns":
+			[
+				"*activate"
+			],
+			"path": "/Users/saulsparber/.virtualenvs/nbastats/bin"
+		}
+	]
+}
