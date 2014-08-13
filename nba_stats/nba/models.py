@@ -182,7 +182,7 @@ class StatLine(models.Model):
             ast=self.ast, reb=self.reb)
 
 class Game(models.Model):
-    date = models.DateField()
+    date = models.DateField(verbose_name='Game Date (EST)')
     players = models.ManyToManyField('Player', through='StatLine')
     home = models.ForeignKey('Team', verbose_name='Home Team', related_name='home_games')
     away = models.ForeignKey('Team', verbose_name='Away Team', related_name='away_games')

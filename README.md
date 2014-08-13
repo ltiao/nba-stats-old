@@ -18,6 +18,9 @@ To get setup for development,
     ```bash
     export PROJECT_ROOT=<project_root>
 
+    # So that Scrapy can use Django models
+    export PYTHONPATH="$PROJECT_ROOT/nba_stats/:$PYTHONPATH"
+
     export DJANGO_SETTINGS_MODULE=nba_stats.settings.local
     export DATABASE_URL=postgres://<username>:<password>@localhost:5432/<db_name>
 
