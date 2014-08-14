@@ -14,12 +14,6 @@
 				"*activate"
 			],
 			"path": "/Users/tiao/.virtualenvs/nba/bin"
-		},
-		{
-			"path": "nba_stats"
-		},
-		{
-			"path": "nba_stats_bot"
 		}
 	]
 }
