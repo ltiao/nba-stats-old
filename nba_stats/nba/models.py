@@ -40,7 +40,10 @@ class Person(models.Model):
         ordering = ['first_name', 'last_name']
 
 class Player(Person):
-    is_active = models.BooleanField()
+    nba_player_id = models.IntegerField(unique=True)
+    nba_player_code = models.CharField(max_length=30, unique=True)
+
+    is_active = models.BooleanField(verbose_name='Active')
     # May need to revisit this since '00' (not '0') might be allowed
     jersey = models.PositiveSmallIntegerField(
         verbose_name = 'Jersey number',
@@ -50,12 +53,17 @@ class Player(Person):
     # I've created Position as a separate model
     # since this could be a ManyToMany relation
     # (I've seen many players listed as 'SG-SF', 'PF-C', etc.)
-    position = models.ForeignKey('Position', null=True)
-    height = models.PositiveSmallIntegerField(
-        verbose_name = 'Height (in)', 
-        max_length = 2,
-        null = True,
-    )
+
+    # TODO: Change back to this
+    # position = models.ForeignKey('Position', null=True)
+    # height = models.PositiveSmallIntegerField(
+    #     verbose_name = 'Height (in)', 
+    #     max_length = 2,
+    #     null = True,
+    # )
+
+    position = models.CharField(max_length=20)
+    height = models.CharField(max_length=20)
     weight = models.PositiveSmallIntegerField(
         verbose_name = 'Weight (lb)', 
         max_length = 3,
@@ -66,6 +74,8 @@ class Player(Person):
         max_length = 2,
         null = True # Used to signify 'Undrafted'
     )
+
+    # TODO: Add year drafted
 
     @property
     def round(self):

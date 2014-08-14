@@ -25,9 +25,19 @@ class Migration(SchemaMigration):
         # Deleting field 'Player.active'
         db.delete_column(u'nba_player', 'active')
 
+        # Adding field 'Player.nba_player_id'
+        db.add_column(u'nba_player', 'nba_player_id',
+                      self.gf('django.db.models.fields.IntegerField')(default=0, unique=True),
+                      keep_default=False)
+
+        # Adding field 'Player.nba_player_code'
+        db.add_column(u'nba_player', 'nba_player_code',
+                      self.gf('django.db.models.fields.CharField')(default='', unique=True, max_length=30),
+                      keep_default=False)
+
         # Adding field 'Player.is_active'
         db.add_column(u'nba_player', 'is_active',
-                      self.gf('django.db.models.fields.BooleanField')(default=True),
+                      self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
 
@@ -38,10 +48,15 @@ class Migration(SchemaMigration):
         db.alter_column(u'nba_player', 'country', self.gf('django.db.models.fields.CharField')(max_length=30, null=True))
 
         # Changing field 'Player.height'
-        db.alter_column(u'nba_player', 'height', self.gf('django.db.models.fields.PositiveSmallIntegerField')(max_length=2, null=True))
+        db.alter_column(u'nba_player', 'height', self.gf('django.db.models.fields.CharField')(max_length=20))
 
+        # Renaming column for 'Player.position' to match new field type.
+        db.rename_column(u'nba_player', 'position_id', 'position')
         # Changing field 'Player.position'
-        db.alter_column(u'nba_player', 'position_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['nba.Position'], null=True))
+        db.alter_column(u'nba_player', 'position', self.gf('django.db.models.fields.CharField')(max_length=20))
+        # Removing index on 'Player', fields ['position']
+        db.delete_index(u'nba_player', ['position_id'])
+
 
         # Changing field 'Player.jersey'
         db.alter_column(u'nba_player', 'jersey', self.gf('django.db.models.fields.PositiveSmallIntegerField')(max_length=2, null=True))
@@ -61,6 +76,9 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Adding index on 'Player', fields ['position']
+        db.create_index(u'nba_player', ['position_id'])
+
         # Deleting model 'Contract'
         db.delete_table(u'nba_contract')
 
@@ -82,6 +100,12 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.BooleanField')(),
                       keep_default=False)
 
+        # Deleting field 'Player.nba_player_id'
+        db.delete_column(u'nba_player', 'nba_player_id')
+
+        # Deleting field 'Player.nba_player_code'
+        db.delete_column(u'nba_player', 'nba_player_code')
+
         # Deleting field 'Player.is_active'
         db.delete_column(u'nba_player', 'is_active')
 
@@ -96,17 +120,11 @@ class Migration(SchemaMigration):
         # Changing field 'Player.country'
         db.alter_column(u'nba_player', 'country', self.gf('django.db.models.fields.CharField')(max_length=2, null=True))
 
-        # User chose to not deal with backwards NULL issues for 'Player.height'
-        raise RuntimeError("Cannot reverse this migration. 'Player.height' and its values cannot be restored.")
-        
-        # The following code is provided here to aid in writing a correct migration
         # Changing field 'Player.height'
         db.alter_column(u'nba_player', 'height', self.gf('django.db.models.fields.PositiveSmallIntegerField')(max_length=2))
 
-        # User chose to not deal with backwards NULL issues for 'Player.position'
-        raise RuntimeError("Cannot reverse this migration. 'Player.position' and its values cannot be restored.")
-        
-        # The following code is provided here to aid in writing a correct migration
+        # Renaming column for 'Player.position' to match new field type.
+        db.rename_column(u'nba_player', 'position', 'position_id')
         # Changing field 'Player.position'
         db.alter_column(u'nba_player', 'position_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['nba.Position']))
 
@@ -177,13 +195,15 @@ class Migration(SchemaMigration):
             'birthdate': ('django.db.models.fields.DateField', [], {}),
             'country': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'height': ('django.db.models.fields.PositiveSmallIntegerField', [], {'max_length': '2', 'null': 'True'}),
+            'height': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {}),
             'jersey': ('django.db.models.fields.PositiveSmallIntegerField', [], {'max_length': '2', 'null': 'True'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'nba_player_code': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'}),
+            'nba_player_id': ('django.db.models.fields.IntegerField', [], {'unique': 'True'}),
             'pick': ('django.db.models.fields.PositiveSmallIntegerField', [], {'max_length': '2', 'null': 'True'}),
-            'position': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['nba.Position']", 'null': 'True'}),
+            'position': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'school': ('django.db.models.fields.CharField', [], {'max_length': '30', 'null': 'True'}),
             'weight': ('django.db.models.fields.PositiveSmallIntegerField', [], {'max_length': '3', 'null': 'True'})
         },
