@@ -281,3 +281,6 @@ class Position(models.Model):
         choices = POSITION_CHOICES_DICT.items(), 
         unique = True
     )
+
+    def __unicode__(self):
+        return self.name
