@@ -15,6 +15,13 @@ def required_params(url, **kwargs):
 	r = requests.get(url, **kwargs)
 	return parse_required(r.text)
 
+extract_result_headers = lambda data: map(lambda d: sub_dict(d, 'name', 'headers'), data['resultSets'])
+
+def result_headers(url, **kwargs):
+    r = requests.get(url, params=params)
+    r.raise_for_status()
+    return extract_result_headers(r.json())
+
 if __name__ == '__main__':
 
     import argparse
@@ -40,6 +47,11 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
+    # input_ = yaml.load(args.infile)  
+    # yaml.safe_dump(input_, args.outfile, default_flow_style=False)
+
+    # exit(0)
+
     if args.get_params is not None:
         urls = yaml.load(args.infile)  
 
@@ -58,8 +70,7 @@ if __name__ == '__main__':
     for resource in resources:
         url = resource['url']
         params = resource['params']
-        r = requests.get(url, params=params)
-        r.raise_for_status()
-        result_sets = map(lambda d: sub_dict(d, 'name', 'headers'), r.json()['resultSets'])
-        resource['headers'] = 
+        resource['results'] = result_headers(url, params=params)
+        resource['params'] = resource['params'].keys()
+
     yaml.safe_dump(resources, args.outfile, default_flow_style=False)
