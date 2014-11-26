@@ -47,11 +47,6 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    # input_ = yaml.load(args.infile)  
-    # yaml.safe_dump(input_, args.outfile, default_flow_style=False)
-
-    # exit(0)
-
     if args.get_params is not None:
         urls = yaml.load(args.infile)  
 
@@ -67,10 +62,17 @@ if __name__ == '__main__':
 
     resources = yaml.load(args.infile)
 
+    results = []
     for resource in resources:
         url = resource['url']
         params = resource['params']
-        resource['results'] = result_headers(url, params=params)
-        resource['params'] = resource['params'].keys()
+        r = requests.get(url, params=params)
+        r.raise_for_status()
+        data = r.json()
+        for result_set in data['resultSets']:
+            results.append({'name': result_set[u'name'],
+                            'fields': result_set[u'headers'],
+                            'url': resource['url'],
+                            'params': params.keys()})
 
-    yaml.safe_dump(resources, args.outfile, default_flow_style=False)
+    yaml.safe_dump(results, args.outfile, default_flow_style=False)
