@@ -22,6 +22,8 @@ def result_headers(url, **kwargs):
     r.raise_for_status()
     return extract_result_headers(r.json())
 
+norm = lambda text: text.replace('_', '').lower()
+
 if __name__ == '__main__':
 
     import argparse
@@ -76,3 +78,5 @@ if __name__ == '__main__':
                             'params': params.keys()})
 
     yaml.safe_dump(results, args.outfile, default_flow_style=False)
+
+
