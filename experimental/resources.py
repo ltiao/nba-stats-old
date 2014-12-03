@@ -1,10 +1,11 @@
+from __future__ import print_function
+from collections import defaultdict
+
 import re
 import sys
 import yaml
 import pprint
 import requests
-
-from collections import defaultdict
 
 requirements_regex = re.compile(r'(?:The\s)?([A-Za-z]+)\s(?:property\s)?is\srequired') 
 parse_required = lambda text: requirements_regex.findall(text)
@@ -64,20 +65,16 @@ if __name__ == '__main__':
 
     resources = yaml.load(args.infile)
 
-    results = {}
     for resource in resources:
         url = resource['url']
         params = resource['params']
+        resource['params'] = params.keys()
         r = requests.get(url, params=params)
         r.raise_for_status()
         data = r.json()
-        for result_set in data['resultSets']:
-            results[result_set[u'name']] = {
-                'fields': result_set[u'headers'],
-                'url': resource['url'],
-                'params': params.keys()
-            }
+        resource['fields'] = {result_set[u'name']:result_set[u'headers'] \
+            for result_set in data['resultSets']}
 
-    yaml.safe_dump(results, args.outfile, default_flow_style=False)
+    yaml.safe_dump(resources, args.outfile, default_flow_style=False)
 
 

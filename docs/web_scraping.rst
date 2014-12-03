@@ -12,6 +12,9 @@ Here, we implement a system of checks which will detect any
 changes in schema, required parameters, etc. and also highlight
 and document any peculiarities with the internal interface.
 
+########
+Synopsis
+########
 
 Most data sources reside in the subdomain http://stats.nba.com
 and live under the ``/stats`` directory. e.g. http://stats.nba.com/stats/playerprofile
@@ -38,3 +41,153 @@ the following regular expression::
 	(?:The\s)?([A-Za-z]+)\s(?:property\s)?is\srequired
 
 which will extract a list of parameters from the message.
+
+""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/playergamelog
+""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* PlayerID
+* Season
+* SeasonType
+
+"""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/commonallplayers
+"""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* LeagueID
+* Season
+* IsOnlyCurrentSeason
+
+""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/playerprofile
+""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* LeagueID
+* PlayerID
+* Season
+* SeasonType
+* GraphStartSeason
+* GraphEndSeason
+* GraphStat
+
+"""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/commonplayerinfo
+"""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* PlayerID
+
+"""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/playbyplay
+"""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* GameID
+* StartPeriod
+* EndPeriod
+
+""""""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/leaguedashteamstats
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* MeasureType
+* PerMode
+* PlusMinus
+* PaceAdjust
+* Rank
+* Season
+* SeasonType
+* Outcome
+* Location
+* Month
+* SeasonSegment
+* DateFrom
+* DateTo
+* OpponentTeamID
+* VsConference
+* VsDivision
+* GameSegment
+* Period
+* LastNGames
+
+""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/teamgamelog
+""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* TeamID
+* Season
+* SeasonType
+
+"""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/commonteamroster
+"""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* Season
+* TeamID
+
+""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/teamdashlineups
+""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* GroupQuantity
+* GameID
+* SeasonType
+* TeamID
+* MeasureType
+* PerMode
+* PlusMinus
+* PaceAdjust
+* Rank
+* Season
+* Outcome
+* Location
+* Month
+* SeasonSegment
+* DateFrom
+* DateTo
+* OpponentTeamID
+* VsConference
+* VsDivision
+* GameSegment
+* Period
+* LastNGames
+
+"""""""""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/boxscoreadvanced
+"""""""""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* GameID
+* StartPeriod
+* EndPeriod
+* StartRange
+* EndRange
+* RangeType
+
+"""""""""""""""""""""""""""""""""""""
+http://stats.nba.com/stats/scoreboard
+"""""""""""""""""""""""""""""""""""""
+
+Required Parameters:
+
+* GameDate
+* LeagueID
+* DayOffset
+
