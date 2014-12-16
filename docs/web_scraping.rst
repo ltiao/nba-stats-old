@@ -42,152 +42,30 @@ the following regular expression::
 
 which will extract a list of parameters from the message.
 
-""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/playergamelog
-""""""""""""""""""""""""""""""""""""""""
+##############
+Scrapy Crawler
+##############
 
-Required Parameters:
+Scrapy gives you a number of ways to specify the URLs from which to start
+crawling. Typically, a list of `start_urls <http://doc.scrapy.org/en/latest
+/topics/spiders.html#scrapy.spider.Spider.start_urls>`_ are specified and by
+default, `start_requests <http://doc.scrapy.org/en/latest/topics/spiders.html#scrapy
+.spider.Spider.start_requests>`_ will use `make_requests_from_url <http://
+doc.scrapy.org/en/latest/topics/spiders.html#scrapy.spider.Spider.
+make_requests_from_url>`_ to generate `Request <http://doc.scrapy.org/en/
+latest/topics/request-response.html#scrapy.http.Request>`_ objects from the URLs.
 
-* PlayerID
-* Season
-* SeasonType
+While our starting URLs don't require authentication so no ``POST`` requests are 
+required, they are however, parameterized. Therefore, we override ``start_requests`` 
+and return (an iterator of) ``FormRequest`` object(s) with the starting URL and
+the required parameters.
 
-"""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/commonallplayers
-"""""""""""""""""""""""""""""""""""""""""""
+.. include:: resource_details.rst
 
-Required Parameters:
+###########################
+NBA Statistics Terms of Use
+###########################
 
-* LeagueID
-* Season
-* IsOnlyCurrentSeason
+From http://www.nba.com/news/termsofuse.html#statistics:
 
-""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/playerprofile
-""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* LeagueID
-* PlayerID
-* Season
-* SeasonType
-* GraphStartSeason
-* GraphEndSeason
-* GraphStat
-
-"""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/commonplayerinfo
-"""""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* PlayerID
-
-"""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/playbyplay
-"""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* GameID
-* StartPeriod
-* EndPeriod
-
-""""""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/leaguedashteamstats
-""""""""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* MeasureType
-* PerMode
-* PlusMinus
-* PaceAdjust
-* Rank
-* Season
-* SeasonType
-* Outcome
-* Location
-* Month
-* SeasonSegment
-* DateFrom
-* DateTo
-* OpponentTeamID
-* VsConference
-* VsDivision
-* GameSegment
-* Period
-* LastNGames
-
-""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/teamgamelog
-""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* TeamID
-* Season
-* SeasonType
-
-"""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/commonteamroster
-"""""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* Season
-* TeamID
-
-""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/teamdashlineups
-""""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* GroupQuantity
-* GameID
-* SeasonType
-* TeamID
-* MeasureType
-* PerMode
-* PlusMinus
-* PaceAdjust
-* Rank
-* Season
-* Outcome
-* Location
-* Month
-* SeasonSegment
-* DateFrom
-* DateTo
-* OpponentTeamID
-* VsConference
-* VsDivision
-* GameSegment
-* Period
-* LastNGames
-
-"""""""""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/boxscoreadvanced
-"""""""""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* GameID
-* StartPeriod
-* EndPeriod
-* StartRange
-* EndRange
-* RangeType
-
-"""""""""""""""""""""""""""""""""""""
-http://stats.nba.com/stats/scoreboard
-"""""""""""""""""""""""""""""""""""""
-
-Required Parameters:
-
-* GameDate
-* LeagueID
-* DayOffset
-
+  "The Operator of this Site may make available on this Site statistics, including statistics generated and/or calculated by the Operator using proprietary calculations and analyses, relating to or arising out of the performance of players during or in connection with NBA, Women’s National Basketball Association (“WNBA”) or NBA Development League (“D-League”) games, competitions or events (collectively, “NBA Statistics”). By using such NBA Statistics, you agree that: (1) any use, display or publication of the NBA Statistics shall include a prominent attribution to NBA.com in connection with such use, display or publication; (2) the NBA Statistics may only be used, displayed or published for legitimate news reporting or private, non-commercial purposes; (3) the NBA Statistics may not be used in connection with any sponsorship or commercial identification; (4) the NBA Statistics may not be used or referred to in connection with any gambling activity (including legal gambling activity); (5) the NBA Statistics may not be used in connection with any fantasy game or other commercial product or service; (6) the NBA Statistics may not be used in connection with any product or service that presents a live, near-live or other real-time or archived play-by-play account or depiction of any NBA game; and (7) the NBA Statistics may not be used in connection with any web site, product or service that features a database (in any medium or format) of comprehensive, regularly updated statistics from NBA, WNBA or D-League games, competitions or events without the Operator’s express prior consent." 

@@ -71,9 +71,8 @@ if __name__ == '__main__':
         resource['params'] = params.keys()
         r = requests.get(url, params=params)
         r.raise_for_status()
-        data = r.json()
-        resource['fields'] = {result_set[u'name']:result_set[u'headers'] \
-            for result_set in data['resultSets']}
+        resource['results'] = [sub_dict(result_set, 'name', 'headers') \
+            for result_set in r.json().get('resultSets')]
 
     yaml.safe_dump(resources, args.outfile, default_flow_style=False)
 
